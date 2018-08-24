@@ -2,11 +2,20 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Repositories\UserRepository;
+use App\Services\UserService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class UserController extends Controller
 {
+    protected $userService;
+
+    public function __construct(UserService $userService)
+    {
+        $this->userService = $userService;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -15,6 +24,9 @@ class UserController extends Controller
     public function index()
     {
         //
+        $Users = $this->userService->getAllUsers();
+
+        return response()->json(['data' => $Users], 200);
     }
 
     /**
