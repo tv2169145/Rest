@@ -141,7 +141,7 @@ class UserController extends Controller
     {
 
         $user = $this->userService->getOneUserORM($id);
-//dd($user);
+
         $user->delete();
 
         return response()->json(['date' => $user], 200);
