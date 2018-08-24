@@ -7,16 +7,39 @@ use Yish\Generators\Foundation\Service\Service;
 
 class UserService extends Service
 {
-    protected $UserRepository;
+    protected $userRepository;
 
     public function __construct(UserRepository $UserRepository)
     {
-        $this->UserRepository = $UserRepository;
+        $this->userRepository = $UserRepository;
     }
+
 
     public function getAllUsers()
     {
-        return $this->UserRepository->getAllUser();
+        return $this->userRepository->getAllUser();
+    }
+
+    public function getOneUser($id)
+    {
+        $user = $this->userRepository->getOneUser($id);
+
+        return $user;
+    }
+
+    public function createUser($data)
+    {
+
+        $userData = $data;
+
+        $userData['password'] = bcrypt($userData['password']);
+        $userData['verified'] = $this->userRepository->getUnverifiedUser();
+        $userData['verification_token'] = $this->userRepository->generateVerificationCode();
+        $userData['admin'] = $this->userRepository->getRegularUser();
+
+        $user = $this->userRepository->createUser($userData);
+
+        return $user;
     }
 
 }
