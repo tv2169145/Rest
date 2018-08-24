@@ -108,7 +108,8 @@ class UserController extends Controller
 
         $data = $request;
 
-        $updateUser = $this->userService->updateUser($data, $id);
+        $user = $this->userService->updateUser($data, $id);
+
 
         if($data->has('admin')){
             if(!$user->isVerified()){
@@ -116,17 +117,16 @@ class UserController extends Controller
                     'code' => 409],
                     409);
             }
-            $updateUser->admin = $data->admin;
+            $user->admin = $data->admin;
         }
 
-        if(!$updateUser->isDirty()){
+        if(!$user->isDirty()){
             return response()->json(['error' => 'you need to specify a different value to update',
                 'code' => 422],
                 422);
         }
 
-        $updateUser->save();
-
+        $user->save();
 
         return response()->json(['date' => $user], 200);
     }
@@ -139,6 +139,12 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+
+        $user = $this->userService->getOneUserORM($id);
+//dd($user);
+        $user->delete();
+
+        return response()->json(['date' => $user], 200);
+
     }
 }

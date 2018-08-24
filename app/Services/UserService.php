@@ -61,8 +61,6 @@ class UserService extends Service
             $user->password = bcrypt($data->password);
         }
 
-
-
         return $user;
 
     }
