@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Services\UserService;
+use App\User;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -95,7 +96,39 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $user = $this->userService->getOneUserORM($id);
+
+        $rules = [
+            'email' => 'email|unique:users,email,' . $user->id,
+            'password' => 'min:6|confirmed',
+            'admin' => 'in:' . User::ADMIN_USER . ',' . User::REGULAR_USER,
+        ];
+
+        $this->validate($request, $rules);
+
+        $data = $request;
+
+        $updateUser = $this->userService->updateUser($data, $id);
+
+        if($data->has('admin')){
+            if(!$user->isVerified()){
+                return response()->json(['error' => 'only verified users can modify the admin field',
+                    'code' => 409],
+                    409);
+            }
+            $updateUser->admin = $data->admin;
+        }
+
+        if(!$updateUser->isDirty()){
+            return response()->json(['error' => 'you need to specify a different value to update',
+                'code' => 422],
+                422);
+        }
+
+        $updateUser->save();
+
+
+        return response()->json(['date' => $user], 200);
     }
 
     /**

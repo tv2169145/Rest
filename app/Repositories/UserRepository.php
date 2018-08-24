@@ -22,7 +22,8 @@ class UserRepository extends Repository
 
     public function getOneUser($id)
     {
-        return DB::table('users')->where('id', $id)->get();
+        $user = DB::table('users')->where('id', $id)->get();
+        return $user;
     }
 
 
@@ -53,6 +54,11 @@ class UserRepository extends Repository
         $user = User::create($userData);
 
         return $user;
+    }
+
+    public function getOneUserByORM($id)
+    {
+        return User::findOrFail($id);
     }
 
     //

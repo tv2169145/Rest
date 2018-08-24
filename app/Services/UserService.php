@@ -42,4 +42,35 @@ class UserService extends Service
         return $user;
     }
 
+    public function updateUser($data, $id)
+    {
+        $user = $this->userRepository->getOneUserByORM($id);
+
+
+        if($data->has('name')){
+            $user->name = $data->name;
+        }
+
+        if($data->has('email') && $user->email != $data->email){
+            $user->verified = $this->userRepository->getUnverifiedUser();
+            $user->verification_token = $this->userRepository->generateVerificationCode();
+            $user->email = $data->email;
+        }
+
+        if($data->has('password')){
+            $user->password = bcrypt($data->password);
+        }
+
+
+
+        return $user;
+
+    }
+
+    public function getOneUserORM($id)
+    {
+        $user = $this->userRepository->getOneUserByORM($id);
+        return $user;
+    }
+
 }
