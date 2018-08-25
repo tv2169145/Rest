@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Buyer;
 
-use App\Http\Controllers\Controller;
+use App\Buyer;
+use App\Http\Controllers\ApiController;
 use App\Services\BuyerService;
 
-class BuyerController extends Controller
+class BuyerController extends ApiController
 {
 
     protected $buyerService;
@@ -24,7 +25,7 @@ class BuyerController extends Controller
     {
         $buyers = $this->buyerService->getBuyer();
 
-        return response()->json(['data' => $buyers], 200);
+        return $this->showAll($buyers);
     }
 
 
@@ -37,7 +38,8 @@ class BuyerController extends Controller
     public function show($id)
     {
         $buyer = $this->buyerService->getDetailBuyer($id);
-        return response()->json(['data' => $buyer], 200);
+
+        return $this->showOne($buyer);
     }
 
 }

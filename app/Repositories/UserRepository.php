@@ -22,7 +22,7 @@ class UserRepository extends Repository
 
     public function getOneUser($id)
     {
-        $user = DB::table('users')->where('id', $id)->get();
+        $user = User::findOrFail($id);
         return $user;
     }
 

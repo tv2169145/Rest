@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\ApiController;
 use App\Services\UserService;
 use App\User;
 use Illuminate\Http\Request;
 
-class UserController extends Controller
+class UserController extends ApiController
 {
     protected $userService;
 
@@ -26,18 +26,9 @@ class UserController extends Controller
         //
         $Users = $this->userService->getAllUsers();
 
-        return response()->json(['data' => $Users], 200);
+        return $this->showAll($Users);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -60,7 +51,7 @@ class UserController extends Controller
 
         $user = $this->userService->createUser($data);
 
-        return response()->json(['data' => $user], 201);
+        return $this->showOne($user, 201);
     }
 
     /**
@@ -73,18 +64,7 @@ class UserController extends Controller
     {
         $user = $this->userService->getOneUser($id);
 
-        return response()->json(['data' => $user], 200);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        return $this->showOne($user);
     }
 
     /**
@@ -123,7 +103,7 @@ class UserController extends Controller
                 422);
         }
 
-        return response()->json(['date' => $user], 200);
+        return $this->showOne($user);
     }
 
     /**
@@ -139,7 +119,7 @@ class UserController extends Controller
 
         $user->delete();
 
-        return response()->json(['date' => $user], 200);
+        return $this->showOne($user);
 
     }
 }

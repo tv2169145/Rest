@@ -18,7 +18,7 @@ class BuyerRepository extends Repository
 
     public function getDetailBuyer($id)
     {
-        $buyer = Buyer::has('transactions')->where('id', $id)->get();
+        $buyer = Buyer::has('transactions')->findOrFail($id);
 
         return $buyer;
     }

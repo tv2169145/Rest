@@ -18,7 +18,7 @@ class SellerRepository extends Repository
 
     public function getDetailSeller($id)
     {
-        $seller = Seller::has('products')->where('id', $id)->get();
+        $seller = Seller::has('products')->findOrFail($id);
         return $seller;
     }
 
