@@ -110,23 +110,18 @@ class UserController extends Controller
 
         $user = $this->userService->updateUser($data, $id);
 
-
-        if($data->has('admin')){
-            if(!$user->isVerified()){
+        if($user != null){
+            if($user->admin == null){
                 return response()->json(['error' => 'only verified users can modify the admin field',
                     'code' => 409],
                     409);
             }
-            $user->admin = $data->admin;
-        }
-
-        if(!$user->isDirty()){
+            $user->save();
+        }else{
             return response()->json(['error' => 'you need to specify a different value to update',
                 'code' => 422],
                 422);
         }
-
-        $user->save();
 
         return response()->json(['date' => $user], 200);
     }

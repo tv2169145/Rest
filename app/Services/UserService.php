@@ -61,6 +61,18 @@ class UserService extends Service
             $user->password = bcrypt($data->password);
         }
 
+        if($data->has('admin')){
+            if(!$user->isVerified()){
+                 $user->admin = null;
+                 return $user;
+            }
+            $user->admin = $data->admin;
+        }
+
+        if(!$user->isDirty()){
+           return $user = null;
+        }
+
         return $user;
 
     }
