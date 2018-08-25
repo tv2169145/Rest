@@ -90,17 +90,14 @@ class UserController extends ApiController
 
         $user = $this->userService->updateUser($data, $id);
 
-        if($user != null){
-            if($user->admin == null){
-                return response()->json(['error' => 'only verified users can modify the admin field',
-                    'code' => 409],
-                    409);
+        if ($user != null) {
+            if ($user->admin == null) {
+                return $this->errorResponse('only verified users can modify the admin field', 409);
+
             }
             $user->save();
-        }else{
-            return response()->json(['error' => 'you need to specify a different value to update',
-                'code' => 422],
-                422);
+        } else {
+            return $this->errorResponse('you need to specify a different value to update', 422);
         }
 
         return $this->showOne($user);
