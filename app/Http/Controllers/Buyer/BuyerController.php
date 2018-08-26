@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Buyer;
 use App\Buyer;
 use App\Http\Controllers\ApiController;
 use App\Services\BuyerService;
+use App\User;
 
 class BuyerController extends ApiController
 {
