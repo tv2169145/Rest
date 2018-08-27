@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Seller;
 
+use App\Seller;
 use App\Services\SellerService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\ApiController;
@@ -34,9 +35,9 @@ class SellerController extends ApiController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Seller $seller )
     {
-        $seller = $this->sellerService->getDetailSeller($id);
+//        $seller = $this->sellerService->getDetailSeller($id);
         return $this->showOne($seller);
     }
 }
