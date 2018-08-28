@@ -24,6 +24,10 @@ use Illuminate\Support\Facades\Route;
  * Buyers
  */
 Route::resource('buyers', 'Buyer\BuyerController', ['only' => ['index', 'show']]);
+Route::resource('buyer.transactions', 'Buyer\BuyerTransactionController', ['only' => ['index']]);
+Route::resource('buyer.products', 'Buyer\BuyerProductController', ['only' => ['index']]);
+Route::resource('buyer.sellers', 'Buyer\BuyerSellerController', ['only' => ['index']]);
+Route::resource('buyer.categories', 'Buyer\BuyerCategoryController', ['only' => ['index']]);
 
 /**
  * Categories
