@@ -33,14 +33,19 @@ class AppServiceProvider extends ServiceProvider
 
         //新建user時 寄出驗證信事件
         User::created(function($user){
-            Mail::to($user)->send(new UserCreated($user));
+            retry(5, function() use ($user) {
+                Mail::to($user)->send(new UserCreated($user));
+            }, 100);
         });
 
         //user更改email時季初驗證信
         User::updated(function($user){
-            if($user->isDirty('email')){
-                Mail::to($user->email)->send(new UserMailChanged($user));
-            }
+            retry(5, function() use ($user) {
+                if($user->isDirty('email')){
+                    Mail::to($user->email)->send(new UserMailChanged($user));
+                }
+            }, 100);
+
         });
     }
 
