@@ -4,6 +4,7 @@ namespace App\Providers;
 
 
 use App\Mail\UserCreated;
+use App\Mail\UserMailChanged;
 use App\Product;
 use App\User;
 use Illuminate\Support\Facades\Mail;
@@ -30,8 +31,16 @@ class AppServiceProvider extends ServiceProvider
             }
         });
 
+        //新建user時 寄出驗證信事件
         User::created(function($user){
             Mail::to($user)->send(new UserCreated($user));
+        });
+
+        //user更改email時季初驗證信
+        User::updated(function($user){
+            if($user->isDirty('email')){
+                Mail::to($user->email)->send(new UserMailChanged($user));
+            }
         });
     }
 
