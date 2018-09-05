@@ -3,7 +3,10 @@
 namespace App\Traits;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Validator;
+
 
 trait APIResponser
 {
@@ -34,6 +37,9 @@ trait APIResponser
         //排序
         $collection = $this->sortData($collection, $transformer);
 
+        //分頁
+        $collection = $this->paginate($collection);
+
         //取得格式轉換後的資料
         $collection = $this->transformData($collection, $transformer);
 
@@ -61,7 +67,7 @@ trait APIResponser
     {
         //url : restfulapi.test/user?sort_by=identifier&isVerified=0
 
-        // request()->query 會輸出   [ 'sory_by' => 'identifier'
+        // request()->query 會輸出   [ 'sort_by' => 'identifier'
         //                            'isVerified' => '0'
         //                                                  ]
 
@@ -89,6 +95,41 @@ trait APIResponser
 
         return $collection;
     }
+
+    //**     分頁                 **/
+    private function paginate(Collection $collection)
+    {
+        $rules =[
+            'per_page' => 'integer|min:2|max:50',
+        ];
+        //因為是在trait 所以無法用$this->validate()
+        Validator::validate(request()->all(), $rules);
+
+        //當前頁
+        $page = LengthAwarePaginator::resolveCurrentPage();
+
+        //每頁幾筆
+        $perPage = 15;
+        if(request()->has('per_page')){
+            $perPage = (int) request()->per_page;
+        }
+
+        $result = $collection->slice(($page - 1) * $perPage, $perPage)->values();
+
+        //   'path'為必備
+        //   LengthAwarePaginator::resolveCurrentPath() 輸出為當前url
+        //   ['path' => LengthAwarePaginator::resolveCurrentPath()] 輸出為 "當前url"?page=下一頁碼或上一頁碼
+        $paginated = new LengthAwarePaginator($result, $collection->count(), $perPage, $page, [
+           'path' =>  LengthAwarePaginator::resolveCurrentPath(),
+        ]);
+
+        //將參數帶給路徑 ex:http://restfulapi.test/user?sort_by=name&page=2 例如:過濾器參數 或 排序參數
+        $paginated->appends(request()->all());
+
+        return $paginated;
+    }
+
+
 
     //transform
     protected function transformData($data, $transform)
