@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\ApiController;
 use App\Mail\UserCreated;
 use App\Services\UserService;
+use App\Transformers\UserTransformer;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -15,7 +16,10 @@ class UserController extends ApiController
 
     public function __construct(UserService $userService)
     {
+        parent::__construct();
+        $this->middleware('transform.input:' . UserTransformer::class)->only(['store', 'update']);
         $this->userService = $userService;
+
     }
 
     /**
