@@ -9,11 +9,11 @@ use App\User;
 
 class BuyerController extends ApiController
 {
-
     protected $buyerService;
 
     public function __construct(BuyerService $buyerService)
     {
+        parent::__construct();
         $this->buyerService = $buyerService;
     }
 

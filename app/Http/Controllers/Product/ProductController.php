@@ -12,6 +12,7 @@ class ProductController extends ApiController
 
     public function __construct(ProductService $productService)
     {
+        $this->middleware('client.credentials')->only(['index','show']);
         $this->productService = $productService;
     }
 

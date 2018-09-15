@@ -167,8 +167,9 @@ return [
         /*
          * Package Service Providers...
          */
+        Laravel\Passport\PassportServiceProvider::class,  //for apiToken
         Laravel\Tinker\TinkerServiceProvider::class,
-        Spatie\Fractal\FractalServiceProvider::class,
+        Spatie\Fractal\FractalServiceProvider::class,  //for transformer
 
         /*
          * Application Service Providers...

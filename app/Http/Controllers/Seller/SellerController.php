@@ -13,6 +13,7 @@ class SellerController extends ApiController
 
     public function __construct(SellerService $sellerService)
     {
+        parent::__construct();
         $this->sellerService = $sellerService;
     }
 

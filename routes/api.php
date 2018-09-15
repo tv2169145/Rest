@@ -69,6 +69,9 @@ Route::resource('user', 'User\UserController', ['except' => ['create', 'edit']])
 Route::name('verify')->get('user/verify/{token}', 'User\UserController@verify');
 //重發驗證信
 Route::name('resend')->get('user/{user}/resend', 'User\UserController@resend');
+//apiToken
+Route::post('oauth/token', '\Laravel\Passport\Http\Controllers\AccessTokenController@issueToken');
+
 
 
 
