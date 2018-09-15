@@ -32,9 +32,10 @@ class AuthServiceProvider extends ServiceProvider
 
         //設定passport有效時間
         Passport::tokensExpireIn(Carbon::now()->addMinutes(30));
+//        Passport::tokensExpireIn(Carbon::now()->addSeconds(30));
         //設定token多久換新的
         Passport::refreshTokensExpireIn(Carbon::now()->addDays(30));
-
-        //
+        //隱藏授權
+        Passport::enableImplicitGrant();
     }
 }
