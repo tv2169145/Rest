@@ -58,6 +58,8 @@ class Kernel extends HttpKernel
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
         'client.credentials' => \Laravel\Passport\Http\Middleware\CheckClientCredentials::class, //註冊CheckClientCredentials
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
+        'scope' => \Laravel\Passport\Http\Middleware\CheckForAnyScope::class, //設定存取範圍(有符合的就通過)
+        'scopes' => \Laravel\Passport\Http\Middleware\CheckScopes::class,   //設定存取範圍(全都符合才通過)
         'throttle' => \App\Http\Middleware\CustomThrottleRequests::class,
         'signature' => \App\Http\Middleware\SignatureMiddleware::class,
         'transform.input' => \App\Http\Middleware\TransformInput::class,
