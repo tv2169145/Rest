@@ -2,6 +2,12 @@
 
 namespace App\Providers;
 
+use App\Buyer;
+use App\Policies\BuyerPolicy;
+use App\Policies\SellerPolicy;
+use App\Policies\UserPolicy;
+use App\Seller;
+use App\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -15,7 +21,9 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        'App\Model' => 'App\Policies\ModelPolicy',
+        Buyer::class => BuyerPolicy::class,
+        Seller::class => SellerPolicy::class,
+        User::class => UserPolicy::class,
     ];
 
     /**
@@ -37,7 +45,7 @@ class AuthServiceProvider extends ServiceProvider
         Passport::refreshTokensExpireIn(Carbon::now()->addDays(30));
         //隱藏授權
         Passport::enableImplicitGrant();
-        //
+        //限制各個token能存取的範圍
         Passport::tokensCan([
             'purchase-product' => 'Create a new transaction for a specific product',
             'manage-products' => 'Create, read, update, delete products',
