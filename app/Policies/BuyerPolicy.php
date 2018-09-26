@@ -2,13 +2,15 @@
 
 namespace App\Policies;
 
+use App\Traits\AdminAction;
 use App\User;
 use App\Buyer;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class BuyerPolicy
 {
-    use HandlesAuthorization;
+    use HandlesAuthorization,AdminAction;
+
 
     /**
      * Determine whether the user can view the buyer.

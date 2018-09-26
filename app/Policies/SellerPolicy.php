@@ -2,13 +2,14 @@
 
 namespace App\Policies;
 
+use App\Traits\AdminAction;
 use App\User;
 use App\Seller;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class SellerPolicy
 {
-    use HandlesAuthorization;
+    use HandlesAuthorization,AdminAction;
 
     /**
      * Determine whether the user can view the seller.
