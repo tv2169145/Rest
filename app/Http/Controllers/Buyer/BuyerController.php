@@ -7,6 +7,9 @@ use App\Http\Controllers\ApiController;
 use App\Services\BuyerService;
 use App\User;
 
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Support\Facades\Gate;
+
 class BuyerController extends ApiController
 {
     protected $buyerService;
@@ -26,6 +29,7 @@ class BuyerController extends ApiController
      */
     public function index()
     {
+        $this->allowAdminAction();
         $buyers = $this->buyerService->getBuyer();
 
         return $this->showAll($buyers);

@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Repositories\UserRepository;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Support\Facades\Gate;
 use Yish\Generators\Foundation\Service\Service;
 
 class UserService extends Service
@@ -12,6 +14,13 @@ class UserService extends Service
     public function __construct(UserRepository $UserRepository)
     {
         $this->userRepository = $UserRepository;
+    }
+
+    protected function allowAdminAction()
+    {
+        if(Gate::denies('admin-action')){
+            throw new AuthorizationException("the action is unauthorized");
+        }
     }
 
 
@@ -62,6 +71,7 @@ class UserService extends Service
         }
 
         if($data->has('admin')){
+            $this->allowAdminAction();
             if(!$user->isVerified()){
                  $user->admin = null;
                  return $user;

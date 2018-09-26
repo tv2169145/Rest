@@ -44,6 +44,10 @@ class AuthServiceProvider extends ServiceProvider
         //讓passport可用route
         Passport::routes();
 
+        Gate::define('admin-action', function ($user) {
+            return $user->isAdmin();
+        });
+
         //設定passport有效時間
         Passport::tokensExpireIn(Carbon::now()->addMinutes(30));
 //        Passport::tokensExpireIn(Carbon::now()->addSeconds(30));

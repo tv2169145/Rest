@@ -36,6 +36,7 @@ class UserController extends ApiController
     public function index()
     {
         //
+        $this->allowAdminAction();
         $Users = $this->userService->getAllUsers();
 
         return $this->showAll($Users);
@@ -88,6 +89,7 @@ class UserController extends ApiController
      */
     public function update(Request $request, $id)
     {
+        $this->allowAdminAction();
         $user = $this->userService->getOneUserORM($id);
 
         $rules = [
